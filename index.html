@@ -104,6 +104,11 @@ function gerar() {
     const cUF = chave.substring(0, 2);
     const AAMM = chave.substring(2, 6);
     const CNPJ = chave.substring(6, 20);
+    function formatCNPJ(cnpj) {
+        const digits = cnpj.padStart(14, '0');
+        return digits.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+    }
+    const CNPJ_FORMATADO = formatCNPJ(CNPJ);
     const MOD = chave.substring(20, 22);
     const SERIE = chave.substring(22, 25);
     const NNF = chave.substring(25, 34);
@@ -126,7 +131,7 @@ function gerar() {
 
 Codigo da UF (cUF)...: ${cUF}
 AAMM Emissao.........: ${AAMM} - (AAMM)
-CNPJ Emitente........: ${CNPJ}
+CNPJ Emitente........: ${CNPJ_FORMATADO}
 Modelo (mod).........: ${MOD} - (65 = NFCe Cupom Fiscal)
 Serie................: ${SERIE} - (Numero ECF)
 Numero NFe (nNF).....: ${NNF} - (Numero/Sequencia NFCe)
