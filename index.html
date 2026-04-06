@@ -115,6 +115,37 @@ function gerar() {
     const TPEMIS = chave.substring(34, 35);
     const CNF = chave.substring(35, 43);
     const DV = chave.substring(43, 44);
+    const UF_MAP = {
+            "11": "Rondônia",
+            "12": "Acre",
+            "13": "Amazonas",
+            "14": "Roraima",
+            "15": "Pará",
+            "16": "Amapá",
+            "17": "Tocantins",
+            "21": "Maranhão",
+            "22": "Piauí",
+            "23": "Ceará",
+            "24": "Rio Grande do Norte",
+            "25": "Paraíba",
+            "26": "Pernambuco",
+            "27": "Alagoas",
+            "28": "Sergipe",
+            "29": "Bahia",
+            "31": "Minas Gerais",
+            "32": "Espírito Santo",
+            "33": "Rio de Janeiro",
+            "35": "São Paulo",
+            "41": "Paraná",
+            "42": "Santa Catarina",
+            "43": "Rio Grande do Sul",
+            "50": "Mato Grosso do Sul",
+            "51": "Mato Grosso",
+            "52": "Goiás",
+            "53": "Distrito Federal"
+        };
+    
+        const UF_NOME = UF_MAP[cUF] || "UF desconhecida";
 
     let statusChave = "";
 
@@ -129,12 +160,12 @@ function gerar() {
     const texto =
 `Chave NFC-e........: ${chave}
 
-Codigo da UF (cUF)...: ${cUF}
+Codigo da UF (cUF)...: ${cUF} - ${UF_NOME}
 AAMM Emissao.........: ${AAMM} - (AAMM)
 CNPJ Emitente........: ${CNPJ_FORMATADO}
-Modelo (mod).........: ${MOD} - (65 = NFCe Cupom Fiscal)
+Modelo (mod).........: ${MOD} - (65 = NFCe Cupom Fiscal / 55 = NFe Nota Fiscal)
 Serie................: ${SERIE} - (Numero ECF)
-Numero NFe (nNF).....: ${NNF} - (Numero/Sequencia NFCe)
+Numero NFe (nNF).....: ${NNF} - (Numero/Sequencia NFCe/NFe)
 Forma Emissao........: ${TPEMIS} - (${statusChave})
 Codigo Numerico......: ${CNF}
 Digito Verificador...: ${DV}`;
