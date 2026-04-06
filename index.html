@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Decodificador Chave NFC-e</title>
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+  }
+
+  .container {
+    background: #111827;
+    padding: 24px;
+    border-radius: 12px;
+    width: 900px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+
+  h1 {
+    margin-top: 0;
+    font-size: 22px;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #374151;
+    background: #020617;
+    color: #e5e7eb;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  button {
+    margin-top: 12px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background: #1d4ed8;
+  }
+
+  .output {
+    margin-top: 18px;
+    background: #020617;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 12px;
+    white-space: pre;
+    font-family: Consolas, monospace;
+    min-height: 220px;
+  }
+
+  .error {
+    color: #f87171;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Decodificador Chave NFC-e</h1>
+
+  <label>Informe a chave NFC-e (44 dígitos):</label>
+  <input id="chave" type="text" maxlength="60" placeholder="Digite a chave NFC-e" />
+
+  <button onclick="gerar()">Gerar Infos ChaveNFCe</button>
+
+  <div id="resultado" class="output"></div>
+</div>
+
+<script>
+function gerar() {
+    const chave = document.getElementById("chave").value.trim();
+    const out = document.getElementById("resultado");
+
+    out.innerHTML = "";
+
+    if (chave.length > 44) {
+        out.innerHTML = '<span class="error">CHAVE ACIMA DE 44 DIGITOS</span>';
+        return;
+    }
+
+    if (chave.length < 44) {
+        out.innerHTML = '<span class="error">CHAVE MENOR DO QUE 44 DIGITOS</span>';
+        return;
+    }
+
+    const cUF = chave.substring(0, 2);
+    const AAMM = chave.substring(2, 6);
+    const CNPJ = chave.substring(6, 20);
+    const MOD = chave.substring(20, 22);
+    const SERIE = chave.substring(22, 25);
+    const NNF = chave.substring(25, 34);
+    const TPEMIS = chave.substring(34, 35);
+    const CNF = chave.substring(35, 43);
+    const DV = chave.substring(43, 44);
+
+    let statusChave = "";
+
+    if (TPEMIS === "1") {
+        statusChave = "ChaveNFCe gerada NORMAL";
+    }
+
+    if (TPEMIS === "9") {
+        statusChave = "ChaveNFCe gerada em CONTINGENCIA";
+    }
+
+    const texto =
+`Chave NFC-e........: ${chave}
+
+Codigo da UF (cUF)..: ${cUF}
+AAMM Emissao.........: ${AAMM} - (AAMM)
+CNPJ Emitente........: ${CNPJ}
+Modelo (mod).........: ${MOD} - (65 = NFCe Cupom Fiscal)
+Serie................: ${SERIE} - (Numero ECF)
+Numero NFe (nNF).....: ${NNF} - (Numero/Sequencia NFCe)
+Forma Emissao........: ${TPEMIS} - (${statusChave})
+Codigo Numerico......: ${CNF}
+Digito Verificador...: ${DV}`;
+
+    out.textContent = texto;
+}
+</script>
+
+</body>
+</html>
